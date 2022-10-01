@@ -1,0 +1,4 @@
+﻿Dataset,# of Viral,# of Controls,Purpose,Viruses,Re-standardized Severity ,RNA-Seq or Microarray,Cross sectional or longitudinal,Country,Description,Sample Type,Age group (range),Year(s) enrolled,Platform,Author (PMID),Year (of public availability)
+GSE68310,12,6,Validation set,HRV and Seasonal CoVs,"Controls, Symptomatic",Microarray,Longitudinal,USA,influenza and other acute respiratory viral infections,WB,Adult (18-49 years),2009-2011,Illumina HumanHT-12 V4.0,Zhai et al. (26070066),2015
+GSE68310,58,40,Validation set,IFV and HRV,"Controls, Symptomatic",Microarray,Longitudinal,USA,influenza and other acute respiratory viral infections,WB,Adult (18-49 years),2009-2011,Illumina HumanHT-12 V4.0,Zhai et al. (26070066),2015
+GSE68310,6,4,Validation set,IFV and Seasonal CoVs,"Controls, Symptomatic",Microarray,Longitudinal,USA,influenza and other acute respiratory viral infections,WB,Adult (18-49 years),2009-2011,Illumina HumanHT-12 V4.0,Zhai et al. (26070066),2015
