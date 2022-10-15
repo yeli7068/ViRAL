@@ -66,7 +66,10 @@ Pan.ViRAL.Before.Merged <- Pan.extract.Exprs.Pdata(Pan.ViRAL.Before.Merged)
 
 single.virus.projects <- Pan.extract.Exprs.Pdata(single.virus.projects)
 #Prognosis.db <- extractExprsPdata_Nasal(Prognosis.db)
-gene.annotation <- rownames(single.virus.projects$exprs)
+
+#gene.annotation <- rownames(single.virus.projects$exprs)
+gene.annotation.info <- readRDS("./data/gene.annotation.rds")
+gene.annotation <- gene.annotation.info$HGNC.symbol
 
 coinfection.virus.projects <- Pan.extract.Exprs.Pdata(coinfection.virus.projects)
 #=========================================================
@@ -86,7 +89,71 @@ server <- function(input, output, session) {
     
     updateSelectizeInput(session, 'gene.blood.id', choices = gene.annotation, selected = gene.blood.default, server = TRUE)
     
+    output$gene.annos <- renderUI({ 
+      Gene <- input$gene.blood.id
+
+      Gene.Ensembl <- paste0('http://asia.ensembl.org/Homo_sapiens/Gene/Summary?g=', Gene)
+      Gene.Ensembl <- a('ENSEMBL', href = Gene.Ensembl, target="_blank", style = "font-size:100%; color:#3b8dbc")
+      
+      #https://www.ncbi.nlm.nih.gov/gene?term=(RBBP6[gene])%20AND%20(Homo%20sapiens[orgn])%20AND%20alive[prop]%20NOT%20newentry[gene]&sort=weight
+      Gene.NCBI <- paste0('https://www.ncbi.nlm.nih.gov/gene?term=(', Gene, '[gene])%20AND%20(Homo%20sapiens[orgn])%20AND%20alive[prop]%20NOT%20newentry[gene]&sort=weight')
+      Gene.NCBI <- a('NCBI', href = Gene.NCBI, target="_blank", style = "font-size:100%; color:#3b8dbc")
+      
+      #https://www.genecards.org/cgi-bin/carddisp.pl?gene=RBBP6
+      Gene.Genecards <- paste0('https://www.genecards.org/cgi-bin/carddisp.pl?gene=', Gene)
+      Gene.Genecards <- a('GeneCards', href = Gene.Genecards, target="_blank", style = "font-size:100%; color:#3b8dbc")
+      
+      #https://go.drugbank.com/unearth/q?searcher=drugs&query=RBBP6
+      Gene.Drugbank <- paste0('https://go.drugbank.com/unearth/q?searcher=drugs&query=', Gene)
+      Gene.Drugbank <- a('DrugBank', href = Gene.Drugbank, target="_blank", style = "font-size:100%; color:#3b8dbc")
+      
+      #https://www.ebi.ac.uk/gxa/search?=&geneQuery=RBBP6
+      Gene.EBI <- paste0('https://www.ebi.ac.uk/gxa/search?=&geneQuery=', Gene)
+      Gene.EBI <- a('EBI', href = Gene.EBI, target="_blank", style = "font-size:100%; color:#3b8dbc")
+      
+      if (is.na(Gene)) {
+        tagList("Lookup this gene in:")
+      } else {
+        tagList("Lookup this gene in:", 
+                br(),
+                Gene.Ensembl, Gene.NCBI, Gene.Genecards, Gene.Drugbank, Gene.EBI)
+        #tagList(Gene.Ensembl, Gene.NCBI, Gene.Genecards)
+      }
+      
+      })
     
+    output$Gene.EnsemblID <- renderText({ 
+        Gene <- input$gene.blood.id
+        
+        Gene.EnsemblID <- 
+            gene.annotation.info %>%
+            filter(HGNC.symbol == Gene)
+        
+        Gene.EnsemblID <- paste0('Ensemble ID: ', ifelse(is.na(Gene.EnsemblID$Gene.stable.ID), '', Gene.EnsemblID$Gene.stable.ID))
+        Gene.EnsemblID
+    })
+    
+    output$Gene.Alias <- renderText({ 
+        Gene <- input$gene.blood.id
+        
+        Gene.Alias <- 
+            gene.annotation.info %>%
+            filter(HGNC.symbol == Gene)
+        
+        Gene.Alias <- paste0('Alias: ', ifelse(is.na(Gene.Alias$Alias), '', Gene.Alias$Alias))
+        Gene.Alias
+    })
+    
+    output$Gene.Description <- renderText({ 
+        Gene <- input$gene.blood.id
+        
+        Gene.Description <- 
+            gene.annotation.info %>%
+            filter(HGNC.symbol == Gene)
+        
+        Gene.Description <- paste0('Description: ', ifelse(is.na(Gene.Description$Description), '', Gene.Description$Description))
+        Gene.Description
+    })
     # ================================================ Pan infection ================================================
     
     observeEvent(input$gene.blood.id, {
