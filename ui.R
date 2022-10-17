@@ -615,6 +615,7 @@ tab_tutorial <- dashboardPage(
 )
 
 ui <- fluidPage(#theme = shinytheme('cerulean'),
+    
     navbarPage(
         title = NULL,
         id = 'navbar',
@@ -634,7 +635,9 @@ ui <- fluidPage(#theme = shinytheme('cerulean'),
         # # tags$style(type = 'text/css', href = 'bootstrap.css') 
         # # tags$style(type = 'text/css', '.navbar-nav {padding-left: 400px; font-size: 24px;}',
         # #            '.navbar-default {margin-left: 2px;margin-right: 18px;margin-top: -2px;}'
-    )
+    ),
+    dashboardFooter(right = HTML('<footer><script type="text/javascript" src="//rf.revolvermaps.com/0/0/6.js?i=5ost4vt1oo2&amp;m=7&amp;c=e63100&amp;cr1=ffffff&amp;f=arial&amp;l=0&amp;bv=90&amp;lx=-420&amp;ly=420&amp;hi=20&amp;he=7&amp;hc=a8ddff&amp;rs=80" async="async"></script></footer>'),
+                    left = HTML("<footer><h6>Contact: <a href='https://github.com/yeli7068/ViRAL' target='_blank'>Yang LI</a><br>Email: yeli7068@outlook.com</h6><strong><h5><a href='https://sph.pku.edu.cn/info/1416/4185.htm' target='_blank'>Zhou Lab @ Peking University, Peking, China</a></h5></strong></footer>"))
 )
 
 shinyUI(ui)
